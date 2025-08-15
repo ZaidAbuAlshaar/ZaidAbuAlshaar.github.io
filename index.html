@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCalc - Comprehensive Health Calculators</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        secondary: '#3b82f6',
+                        accent: '#f59e0b',
+                        dark: '#1f2937',
+                        night: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+        }
+        .dark .gradient-bg {
+            background: linear-gradient(135deg, #0c2b1d 0%, #0c1f3e 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .dark .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .nav-active {
+            background-color: #ecfdf5;
+            color: #10b981;
+            font-weight: 500;
+        }
+        .dark .nav-active {
+            background-color: #1a3429;
+            color: #34d399;
+        }
+        .animate-pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        .nutrition-card {
+            transition: all 0.3s ease;
+        }
+        .nutrition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, #4b5563 0%, #3b82f6 100%);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        .toggle-icons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 8px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .toggle-icons i {
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Night mode styles */
+        .dark {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .dark .text-gray-900 {
+            color: #f1f5f9;
+        }
+        .dark .text-gray-600 {
+            color: #cbd5e1;
+        }
+        .dark .text-gray-500 {
+            color: #94a3b8;
+        }
+        .dark .bg-white {
+            background-color: #1e293b;
+        }
+        .dark .bg-gray-50 {
+            background-color: #1e293b;
+        }
+        .dark .bg-gray-100 {
+            background-color: #334155;
+        }
+        .dark .bg-gray-900 {
+            background-color: #0f172a;
+        }
+        .dark .border-gray-300 {
+            border-color: #475569;
+        }
+        .dark .shadow-md {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Special gradients for dark mode */
+        .dark .bg-gradient-to-r.from-blue-50.to-indigo-50 {
+            background: linear-gradient(to right, #1e293b, #0f172a);
+        }
+        .dark .bg-gradient-to-r.from-emerald-50.to-teal-50 {
+            background: linear-gradient(to right, #1e3a2f, #0f2f2f);
+        }
+        .dark .bg-gradient-to-r.from-orange-50.to-red-50 {
+            background: linear-gradient(to right, #3a2a1e, #2f0f0f);
+        }
+        
+        /* Animation for theme switch */
+        @keyframes sunRise {
+            0% { transform: rotate(0deg); opacity: 0; }
+            100% { transform: rotate(360deg); opacity: 1; }
+        }
+        @keyframes moonRise {
+            0% { transform: rotate(0deg); opacity: 0; }
+            100% { transform: rotate(-360deg); opacity: 1; }
+        }
+        .sun-animation {
+            animation: sunRise 0.8s ease-out;
+        }
+        .moon-animation {
+            animation: moonRise 0.8s ease-out;
+        }
+        
+        /* New Animated Card Style */
+        .animated-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 20px;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            padding: 2rem;
+            z-index: 1;
+        }
+        
+        .animated-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+            height: 150%;
+            animation: rotBGimg 3s linear infinite;
+            transition: all 0.2s linear;
+            z-index: -1;
+        }
+        
+        @keyframes rotBGimg {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .animated-card::after {
+            content: '';
+            position: absolute;
+            background: white;
+            inset: 4px;
+            border-radius: 16px;
+            z-index: -1;
+        }
+        
+        .dark .animated-card::after {
+            background: #1e293b;
+        }
+        
+        .animated-card:hover::before {
+            background-image: linear-gradient(180deg, rgb(81, 255, 0), purple);
+            animation: rotBGimg 3.5s linear infinite;
+        }
+        
+        /* New 3D Button Style */
+        .button-3d {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            border-width: 0;
+            padding: 0 8px 12px;
+            min-width: 10em;
+            box-sizing: border-box;
+            background: transparent;
+            font: inherit;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .button-3d-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 0;
+            padding: 12px 20px;
+            transform: translateY(0);
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 -1px rgba(0, 0, 0, .25);
+            transition-property: transform;
+            transition-duration: .2s;
+            -webkit-user-select: none;
+            user-select: none;
+            border-radius: 8px;
+        }
+        
+        .button-3d:active .button-3d-top {
+            transform: translateY(6px);
+        }
+        
+        .button-3d-top::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            border-radius: 4px;
+            width: 100%;
+            height: 100%;
+            box-sizing: content-box;
+            background-image: radial-gradient(#10b981, #0d9c6e);
+            text-align: center;
+            color: #fff;
+            box-shadow: inset 0 0 0px 1px rgba(255, 255, 255, .2), 0 1px 2px 1px rgba(255, 255, 255, .2);
+            transition-property: border-radius, padding, width, transform;
+            transition-duration: .2s;
+        }
+        
+        .button-3d:active .button-3d-top::after {
+            border-radius: 6px;
+            padding: 0 2px;
+        }
+        
+        .button-3d-bottom {
+            position: absolute;
+            z-index: -1;
+            bottom: 4px;
+            left: 4px;
+            border-radius: 8px / 16px 16px 8px 8px;
+            padding-top: 6px;
+            width: calc(100% - 8px);
+            height: calc(100% - 10px);
+            box-sizing: content-box;
+            background-color: #0d9c6e;
+            background-image: radial-gradient(4px 8px at 4px calc(100% - 8px), rgba(255, 255, 255, .25), transparent), 
+                             radial-gradient(4px 8px at calc(100% - 4px) calc(100% - 8px), rgba(255, 255, 255, .25), transparent), 
+                             radial-gradient(16px at -4px 0, white, transparent), 
+                             radial-gradient(16px at calc(100% + 4px) 0, white, transparent);
+            box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5), inset 0 -1px 3px 3px rgba(0, 0, 0, .4);
+            transition-property: border-radius, padding-top;
+            transition-duration: .2s;
+        }
+        
+        .button-3d:active .button-3d-bottom {
+            border-radius: 10px 10px 8px 8px / 8px;
+            padding-top: 0;
+        }
+        
+        .button-3d-base {
+            position: absolute;
+            z-index: -2;
+            top: 4px;
+            left: 0;
+            border-radius: 12px;
+            width: 100%;
+            height: calc(100% - 4px);
+            background-color: rgba(0, 0, 0, .15);
+            box-shadow: 0 1px 1px 0 rgba(255, 255, 255, .75), inset 0 2px 2px rgba(0, 0, 0, .25);
+        }
+        
+        /* Blue variant for calculate buttons */
+        .button-3d.blue .button-3d-top::after {
+            background-image: radial-gradient(#3b82f6, #2563eb);
+        }
+        
+        .button-3d.blue .button-3d-bottom {
+            background-color: #2563eb;
+        }
+        
+        /* Emerald variant for calculate buttons */
+        .button-3d.emerald .button-3d-top::after {
+            background-image: radial-gradient(#10b981, #059669);
+        }
+        
+        .button-3d.emerald .button-3d-bottom {
+            background-color: #059669;
+        }
+
+        /* Style for Zaid's profile card (From Uiverse.io by Smit-Prajapati) */
+        .parent {
+          width: 290px;
+          height: 300px;
+          perspective: 1000px;
+        }
+
+        .card {
+          height: 100%;
+          border-radius: 50px;
+          background: linear-gradient(135deg, rgb(0, 255, 214) 0%, rgb(8, 226, 96) 100%);
+          transition: all 0.5s ease-in-out;
+          transform-style: preserve-3d;
+          box-shadow: rgba(5, 71, 17, 0) 40px 50px 25px -40px, rgba(5, 71, 17, 0.2) 0px 25px 25px -5px;
+        }
+
+        .glass {
+          transform-style: preserve-3d;
+          position: absolute;
+          inset: 8px;
+          border-radius: 55px;
+          border-top-right-radius: 100%;
+          background: linear-gradient(0deg, rgba(255, 255, 255, 0.349) 0%, rgba(255, 255, 255, 0.815) 100%);
+          /* -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px); */
+          transform: translate3d(0px, 0px, 25px);
+          border-left: 1px solid white;
+          border-bottom: 1px solid white;
+          transition: all 0.5s ease-in-out;
+        }
+
+        .content {
+          padding: 100px 60px 0px 30px;
+          transform: translate3d(0, 0, 26px);
+        }
+
+        .content .title {
+          display: block;
+          color: #00894d;
+          font-weight: 900;
+          font-size: 20px;
+        }
+
+        .content .text {
+          display: block;
+          color: rgba(0, 137, 78, 0.7647058824);
+          font-size: 15px;
+          margin-top: 20px;
+        }
+
+        .bottom {
+          padding: 10px 12px;
+          transform-style: preserve-3d;
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          right: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          transform: translate3d(0, 0, 26px);
+        }
+
+        .bottom .view-more {
+          display: flex;
+          align-items: center;
+          width: 40%;
+          justify-content: flex-end;
+          transition: all 0.2s ease-in-out;
+        }
+
+        .bottom .view-more:hover {
+          transform: translate3d(0, 0, 10px);
+        }
+
+        .bottom .view-more .view-more-button {
+          background: none;
+          border: none;
+          color: #00c37b;
+          font-weight: bolder;
+          font-size: 12px;
+        }
+
+        .bottom .view-more .svg {
+          fill: none;
+          stroke: #00c37b;
+          stroke-width: 3px;
+          max-height: 15px;
+        }
+
+        .bottom .social-buttons-container {
+          display: flex;
+          gap: 10px;
+          transform-style: preserve-3d;
+        }
+
+        .bottom .social-buttons-container .social-button {
+          width: 30px;
+          aspect-ratio: 1;
+          padding: 5px;
+          background: rgb(255, 255, 255);
+          border-radius: 50%;
+          border: none;
+          display: grid;
+          place-content: center;
+          box-shadow: rgba(5, 71, 17, 0.5) 0px 7px 5px -5px;
+        }
+
+        .bottom .social-buttons-container .social-button:first-child {
+          transition: transform 0.2s ease-in-out 0.4s, box-shadow 0.2s ease-in-out 0.4s;
+        }
+
+        .bottom .social-buttons-container .social-button:nth-child(2) {
+          transition: transform 0.2s ease-in-out 0.6s, box-shadow 0.2s ease-in-out 0.6s;
+        }
+
+        .bottom .social-buttons-container .social-button:nth-child(3) {
+          transition: transform 0.2s ease-in-out 0.8s, box-shadow 0.2s ease-in-out 0.8s;
+        }
+
+        .bottom .social-buttons-container .social-button .svg {
+          width: 15px;
+          fill: #00894d;
+        }
+
+        .bottom .social-buttons-container .social-button:hover {
+          background: black;
+        }
+
+        .bottom .social-buttons-container .social-button:hover .svg {
+          fill: white;
+        }
+
+        .bottom .social-buttons-container .social-button:active {
+          background: rgb(255, 234, 0);
+        }
+
+        .bottom .social-buttons-container .social-button:active .svg {
+          fill: black;
+        }
+
+        .logo {
+          position: absolute;
+          right: 0;
+          top: 0;
+          transform-style: preserve-3d;
+        }
+
+        .logo .circle {
+          display: block;
+          position: absolute;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          top: 0;
+          right: 0;
+          box-shadow: rgba(100, 100, 111, 0.2) -10px 10px 20px 0px;
+          -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+          background: rgba(0, 249, 203, 0.2);
+          transition: all 0.5s ease-in-out;
+        }
+
+        .logo .circle1 {
+          width: 170px;
+          transform: translate3d(0, 0, 20px);
+          top: 8px;
+          right: 8px;
+        }
+
+        .logo .circle2 {
+          width: 140px;
+          transform: translate3d(0, 0, 40px);
+          top: 10px;
+          right: 10px;
+          -webkit-backdrop-filter: blur(1px);
+          backdrop-filter: blur(1px);
+          transition-delay: 0.4s;
+        }
+
+        .logo .circle3 {
+          width: 110px;
+          transform: translate3d(0, 0, 60px);
+          top: 17px;
+          right: 17px;
+          transition-delay: 0.8s;
+        }
+
+        .logo .circle4 {
+          width: 80px;
+          transform: translate3d(0, 0, 80px);
+          top: 23px;
+          right: 23px;
+          transition-delay: 1.2s;
+        }
+
+        .logo .circle5 {
+          width: 50px;
+          transform: translate3d(0, 0, 100px);
+          top: 30px;
+          right: 30px;
+          display: grid;
+          place-content: center;
+          transition-delay: 1.6s;
+        }
+
+        .logo .circle5 .svg {
+          width: 20px;
+          fill: white;
+        }
+
+        .parent:hover .card {
+          transform: rotate3d(1, 1, 0, 30deg);
+          box-shadow: rgba(5, 71, 17, 0.3) 30px 50px 25px -40px, rgba(5, 71, 17, 0.1) 0px 25px 30px 0px;
+        }
+
+        .parent:hover .card .bottom .social-buttons-container .social-button {
+          transform: translate3d(0, 0, 50px);
+          box-shadow: rgba(5, 71, 17, 0.2) -5px 20px 10px 0px;
+        }
+
+        .parent:hover .card .logo .circle2 {
+          transform: translate3d(0, 0, 60px);
+        }
+
+        .parent:hover .card .logo .circle3 {
+          transform: translate3d(0, 0, 80px);
+        }
+
+        .parent:hover .card .logo .circle4 {
+          transform: translate3d(0, 0, 100px);
+        }
+
+        .parent:hover .card .logo .circle5 {
+          transform: translate3d(0, 0, 120px);
+        }
+
+        /* Translation Button Style (From Uiverse.io by njesenberger) */
+        .translate-button {
+          -webkit-appearance: none;
+          appearance: none;
+          position: relative;
+          border-width: 0;
+          padding: 0 8px 12px;
+          min-width: 10em;
+          box-sizing: border-box;
+          background: transparent;
+          font: inherit;
+          cursor: pointer;
+        }
+
+        .translate-button-top {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 0;
+          padding: 8px 16px;
+          transform: translateY(0);
+          text-align: center;
+          color: #fff;
+          text-shadow: 0 -1px rgba(0, 0, 0, .25);
+          transition-property: transform;
+          transition-duration: .2s;
+          -webkit-user-select: none;
+          user-select: none;
+        }
+
+        .translate-button:active .translate-button-top {
+          transform: translateY(6px);
+        }
+
+        .translate-button-top::after {
+          content: '';
+          position: absolute;
+          z-index: -1;
+          border-radius: 4px;
+          width: 100%;
+          height: 100%;
+          box-sizing: content-box;
+          background-image: radial-gradient(#cd3f64, #9d3656);
+          text-align: center;
+          color: #fff;
+          box-shadow: inset 0 0 0px 1px rgba(255, 255, 255, .2), 0 1px 2px 1px rgba(255, 255, 255, .2);
+          transition-property: border-radius, padding, width, transform;
+          transition-duration: .2s;
+        }
+
+        .translate-button:active .translate-button-top::after {
+          border-radius: 6px;
+          padding: 0 2px;
+        }
+
+        .translate-button-bottom {
+          position: absolute;
+          z-index: -1;
+          bottom: 4px;
+          left: 4px;
+          border-radius: 8px / 16px 16px 8px 8px;
+          padding-top: 6px;
+          width: calc(100% - 8px);
+          height: calc(100% - 10px);
+          box-sizing: content-box;
+          background-color: #803;
+          background-image: radial-gradient(4px 8px at 4px calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(4px 8px at calc(100% - 4px) calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(16px at -4px 0, white, transparent), radial-gradient(16px at calc(100% + 4px) 0, white, transparent);
+          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5), inset 0 -1px 3px 3px rgba(0, 0, 0, .4);
+          transition-property: border-radius, padding-top;
+          transition-duration: .2s;
+        }
+
+        .translate-button:active .translate-button-bottom {
+          border-radius: 10px 10px 8px 8px / 8px;
+          padding-top: 0;
+        }
+
+        .translate-button-base {
+          position: absolute;
+          z-index: -2;
+          top: 4px;
+          left: 0;
+          border-radius: 12px;
+          width: 100%;
+          height: calc(100% - 4px);
+          background-color: rgba(0, 0, 0, .15);
+          box-shadow: 0 1px 1px 0 rgba(255, 255, 255, .75), inset 0 2px 2px rgba(0, 0, 0, .25);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-primary p-2 rounded-lg">
+                        <i class="fas fa-calculator text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">HealthCalc</h1>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <button id="home-nav" class="nav-active dark:hover:bg-gray-700 flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        <span>Home</span>
+                    </button>
+                    <button id="calorie-nav" class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-bolt text-xs"></i>
+                        <span>Calorie Calculator</span>
+                    </button>
+                    <button id="weight-nav" class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-bullseye text-xs"></i>
+                        <span>Ideal Weight</span>
+                    </button>
+                    <button id="nutrition-nav" class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-heart text-xs"></i>
+                        <span>Nutrition Tips</span>
+                    </button>
+                    <button id="about-nav" class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-user text-xs"></i>
+                        <span>About Me</span>
+                    </button>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <div class="flex items-center space-x-2">
+                        <i id="sun-icon" class="fas fa-sun text-yellow-400 text-lg sun-animation"></i>
+                        <label class="theme-toggle">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="toggle-slider"></span>
+                            <div class="toggle-icons">
+                                <i class="fas fa-sun"></i>
+                                <i class="fas fa-moon"></i>
+                            </div>
+                        </label>
+                        <i id="moon-icon" class="fas fa-moon text-indigo-300 text-lg opacity-50"></i>
+                    </div>
+                    
+                    <div class="md:hidden">
+                        <button id="mobile-menu" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="mobile-menu-items" class="hidden bg-white dark:bg-gray-800 shadow-lg py-4">
+        <div class="flex flex-col space-y-2 px-4">
+            <button id="mobile-home" class="nav-active dark:hover:bg-gray-700 flex items-center space-x-2 px-4 py-2 rounded-md">
+                <span>Home</span>
+            </button>
+            <button id="mobile-calorie" class="flex items-center space-x-2 px-4 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <i class="fas fa-bolt text-primary"></i>
+                <span>Calorie Calculator</span>
+            </button>
+            <button id="mobile-weight" class="flex items-center space-x-2 px-4 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <i class="fas fa-bullseye text-primary"></i>
+                <span>Ideal Weight</span>
+            </button>
+            <button id="mobile-nutrition" class="flex items-center space-x-2 px-4 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <i class="fas fa-heart text-primary"></i>
+                <span>Nutrition Tips</span>
+            </button>
+            <button id="mobile-about" class="flex items-center space-x-2 px-4 py-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <i class="fas fa-user text-primary"></i>
+                <span>About Me</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page -->
+        <section id="home-page" class="gradient-bg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
+                <div class="text-center mb-16">
+                    <div class="flex justify-center items-center mb-6">
+                        <div class="bg-primary p-4 rounded-full">
+                            <i class="fas fa-chart-line text-white text-3xl"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                        Your Health Journey
+                        <span class="block text-primary dark:text-emerald-400">Starts Here</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Calculate your daily calorie needs, find your ideal weight, and get personalized 
+                        nutrition advice with our comprehensive health calculator tools.
+                    </p>
+                </div>
+
+                <!-- Features Grid with Animated Cards -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="animated-card">
+                        <div class="bg-secondary w-16 h-16 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-bolt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
+                            Calorie Calculator
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center mb-6 leading-relaxed">
+                            Calculate your BMR, TDEE, and daily calorie needs based on your goals.
+                        </p>
+                        <button data-target="calorie-page" class="button-3d">
+                            <span class="button-3d-top">Get Started</span>
+                            <span class="button-3d-bottom"></span>
+                            <span class="button-3d-base"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="animated-card">
+                        <div class="bg-primary w-16 h-16 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-bullseye text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
+                            Ideal Weight
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center mb-6 leading-relaxed">
+                            Find your ideal weight range based on healthy BMI standards.
+                        </p>
+                        <button data-target="weight-page" class="button-3d">
+                            <span class="button-3d-top">Get Started</span>
+                            <span class="button-3d-bottom"></span>
+                            <span class="button-3d-base"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="animated-card">
+                        <div class="bg-accent w-16 h-16 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-heart text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
+                            Nutrition Tips
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-center mb-6 leading-relaxed">
+                            Get personalized macro recommendations and healthy lifestyle advice.
+                        </p>
+                        <button data-target="nutrition-page" class="button-3d">
+                            <span class="button-3d-top">Get Started</span>
+                            <span class="button-3d-bottom"></span>
+                            <span class="button-3d-base"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8 md:p-12">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            Trusted by Health Enthusiasts
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 text-lg">
+                            Our scientifically-backed calculations help you make informed health decisions
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary dark:text-emerald-400 mb-2">98%</div>
+                            <div class="text-gray-600 dark:text-gray-400">Accuracy Rate</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary dark:text-blue-400 mb-2">BMR</div>
+                            <div class="text-gray-600 dark:text-gray-400">Mifflin-St Jeor Formula</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent dark:text-yellow-400 mb-2">24/7</div>
+                            <div class="text-gray-600 dark:text-gray-400">Available Access</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calorie Calculator Page (Hidden by default) -->
+        <section id="calorie-page" class="hidden min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900 dark:to-indigo-900 py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="bg-blue-100 dark:bg-blue-800 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calculator text-blue-600 dark:text-blue-300 text-3xl"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Calorie Calculator</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        Calculate your BMR, TDEE, and daily calorie needs based on your personal goals
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Form -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Your Information</h2>
+                        
+                        <div class="space-y-6">
+                            <!-- Age & Gender Row -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Age (years)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="age"
+                                        class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        placeholder="25"
+                                    />
+                                    <p id="age-error" class="hidden text-red-500 text-sm mt-1">Please enter a valid age between 15-100</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Gender
+                                    </label>
+                                    <select
+                                        id="gender"
+                                        class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    >
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                    <p id="gender-error" class="hidden text-red-500 text-sm mt-1">Please select your gender</p>
+                                </div>
+                            </div>
+
+                            <!-- Height & Weight Row -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Height (cm)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="height"
+                                        class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        placeholder="170"
+                                    />
+                                    <p id="height-error" class="hidden text-red-500 text-sm mt-1">Please enter a valid height between 100-250 cm</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Weight (kg)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="weight"
+                                        class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        placeholder="70"
+                                    />
+                                    <p id="weight-error" class="hidden text-red-500 text-sm mt-1">Please enter a valid weight between 30-300 kg</p>
+                                </div>
+                            </div>
+
+                            <!-- Activity Level -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                    Activity Level
+                                </label>
+                                <div class="space-y-3">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="activityLevel"
+                                            value="sedentary"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-200">Sedentary</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Little or no exercise</div>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="activityLevel"
+                                            value="lightly_active"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-200">Lightly Active</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Light exercise 1-3 days/week</div>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="activityLevel"
+                                            value="moderately_active"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-200">Moderately Active</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Moderate exercise 3-5 days/week</div>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="activityLevel"
+                                            value="very_active"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-200">Very Active</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Hard exercise 6-7 days/week</div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <p id="activity-error" class="hidden text-red-500 text-sm mt-1">Please select your activity level</p>
+                            </div>
+
+                            <!-- Goal -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                    Your Goal
+                                </label>
+                                <div class="space-y-3">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="goal"
+                                            value="lose_weight"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-red-600 dark:text-red-400">Lose Weight</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Caloric deficit of 500 cal/day</div>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="goal"
+                                            value="maintain_weight"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-blue-600 dark:text-blue-400">Maintain Weight</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Maintain current weight</div>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="goal"
+                                            value="gain_muscle"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                                        />
+                                        <div>
+                                            <div class="text-sm font-medium text-green-600 dark:text-green-400">Gain Muscle</div>
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">Caloric surplus of 500 cal/day</div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <p id="goal-error" class="hidden text-red-500 text-sm mt-1">Please select your goal</p>
+                            </div>
+
+                            <button
+                                id="calculate-calories"
+                                class="button-3d blue"
+                            >
+                                <span class="button-3d-top">
+                                    <i class="fas fa-bolt mr-2"></i>
+                                    Calculate My Calories
+                                </span>
+                                <span class="button-3d-bottom"></span>
+                                <span class="button-3d-base"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Your Results</h2>
+                        
+                        <div id="calorie-results" class="text-center py-12">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-calculator text-gray-300 dark:text-gray-500 text-4xl"></i>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">Fill out the form to calculate your daily calorie needs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ideal Weight Calculator Page (Hidden by default) -->
+        <section id="weight-page" class="hidden min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900 dark:to-teal-900 py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="bg-emerald-100 dark:bg-emerald-800 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bullseye text-emerald-600 dark:text-emerald-300 text-3xl"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Ideal Weight Calculator</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        Find your ideal weight range based on healthy BMI standards and see where you stand
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Form -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Your Measurements</h2>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Height (cm)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="height-weight"
+                                    class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    placeholder="170"
+                                />
+                                <p id="height-weight-error" class="hidden text-red-500 text-sm mt-1">Please enter a valid height between 100-250 cm</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Current Weight (kg)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="current-weight"
+                                    class="w-full px-4 py-3 rounded-lg border-2 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-colors border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                    placeholder="70"
+                                />
+                                <p id="current-weight-error" class="hidden text-red-500 text-sm mt-1">Please enter a valid weight between 30-300 kg</p>
+                            </div>
+
+                            <button
+                                id="calculate-ideal-weight"
+                                class="button-3d emerald"
+                            >
+                                <span class="button-3d-top">
+                                    <i class="fas fa-chart-line mr-2"></i>
+                                    Calculate Ideal Weight
+                                </span>
+                                <span class="button-3d-bottom"></span>
+                                <span class="button-3d-base"></span>
+                            </button>
+
+                            <!-- BMI Information -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">BMI Categories:</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-blue-600 dark:text-blue-400">Underweight:</span>
+                                        <span class="dark:text-gray-300">Below 18.5</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-green-600 dark:text-green-400">Normal weight:</span>
+                                        <span class="dark:text-gray-300">18.5 - 24.9</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-yellow-600 dark:text-yellow-400">Overweight:</span>
+                                        <span class="dark:text-gray-300">25.0 - 29.9</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-red-600 dark:text-red-400">Obese:</span>
+                                        <span class="dark:text-gray-300">30.0 and above</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Your Analysis</h2>
+                        
+                        <div id="weight-results" class="text-center py-12">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-bullseye text-gray-300 dark:text-gray-500 text-4xl"></i>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">Enter your measurements to calculate your ideal weight</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nutrition Advice Page (Hidden by default) -->
+        <section id="nutrition-page" class="hidden minh-screen bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900 py-12">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="bg-emerald-100 dark:bg-emerald-800 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-emerald-600 dark:text-emerald-300 text-3xl"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Nutrition & Wellness Tips</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                        Evidence-based nutrition advice and lifestyle tips to support your health and fitness goals
+                    </p>
+                </div>
+
+                <!-- Main Nutrition Tips with Animated Cards -->
+                <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                    <div class="animated-card">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-white dark:bg-gray-700 p-2 rounded-lg shadow-sm">
+                                <i class="fas fa-apple-alt text-gray-700 dark:text-gray-300"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Balanced Macronutrients</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Protein (25%): Essential for muscle repair and growth. Include lean meats, fish, eggs, legumes, and dairy.</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Carbohydrates (45%): Your body's primary energy source. Choose complex carbs like whole grains, fruits, and vegetables.</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Healthy Fats (30%): Important for hormone production and nutrient absorption. Include nuts, avocados, olive oil, and fatty fish.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="animated-card">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-white dark:bg-gray-700 p-2 rounded-lg shadow-sm">
+                                <i class="fas fa-tint text-gray-700 dark:text-gray-300"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Hydration Guidelines</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Drink at least 8-10 glasses (2-2.5L) of water daily</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Increase intake during exercise and hot weather</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Monitor urine color - pale yellow indicates good hydration</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="animated-card">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-white dark:bg-gray-700 p-2 rounded-lg shadow-sm">
+                                <i class="fas fa-clock text-gray-700 dark:text-gray-300"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Meal Timing</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Eat regular meals every 3-4 hours to maintain energy levels</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Have a balanced breakfast within 1-2 hours of waking</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Stop eating 2-3 hours before bedtime for better sleep</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="animated-card">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="bg-white dark:bg-gray-700 p-2 rounded-lg shadow-sm">
+                                <i class="fas fa-running text-gray-700 dark:text-gray-300"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Exercise & Nutrition</h3>
+                        </div>
+                        <ul class="space-y-2">
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Pre-workout: Light snack with carbs and minimal protein 30-60 minutes before</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Post-workout: Protein and carbs within 30-60 minutes after exercise</span>
+                            </li>
+                            <li class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed flex items-start">
+                                <span class="text-emerald-600 dark:text-emerald-400 mr-2 mt-1">•</span>
+                                <span>Stay hydrated before, during, and after workouts</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Superfoods Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8 mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Nutrient-Dense Superfoods</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="animated-card">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Quinoa</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">Complete protein, fiber, minerals</p>
+                        </div>
+                        <div class="animated-card">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Blueberries</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">Antioxidants, vitamin C, brain health</p>
+                        </div>
+                        <div class="animated-card">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Salmon</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">Omega-3, protein, vitamin D</p>
+                        </div>
+                        <div class="animated-card">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Spinach</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">Iron, folate, vitamins A & K</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Disclaimer -->
+                <div class="bg-amber-50 border-2 border-amber-200 dark:bg-amber-900 dark:border-amber-700 rounded-2xl p-6 text-center">
+                    <h3 class="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-2">Important Disclaimer</h3>
+                    <p class="text-amber-700 dark:text-amber-300">
+                        This information is for general educational purposes only and should not replace professional medical advice. 
+                        Always consult with a healthcare provider or registered dietitian before making significant changes to your diet, 
+                        especially if you have any medical conditions or are taking medications.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Page -->
+        <section id="about-page" class="hidden min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900 dark:to-indigo-900 py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="bg-indigo-100 dark:bg-indigo-800 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-indigo-600 dark:text-indigo-300 text-3xl"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">About Me</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        Learn more about the developer behind HealthCalc
+                    </p>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="parent">
+                        <div class="card">
+                            <div class="glass">
+                                <div class="content">
+                                    <span class="title">Zaid Abu Al Shaar</span>
+                                    <p class="text" id="english-content">
+                                       
+                                    </p>
+                                    <p class="text hidden" id="arabic-content">
+                                    </p>
+                                </div>
+                                <div class="bottom">
+                                    <div class="social-buttons-container">
+                                        <a href="https://www.instagram.com/Zaid_10_7" target="_blank" class="social-button">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="https://wa.me/962799569573?text=زيد يرحب بكم كيف يمكنني مساعدتك" target="_blank" class="social-button">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                        <a href="#" class="social-button">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="logo">
+                                <div class="circle circle1"></div>
+                                <div class="circle circle2"></div>
+                                <div class="circle circle3"></div>
+                                <div class="circle circle4"></div>
+                                <div class="circle circle5">
+                                    <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="mt-12 bg-white dark:bg-gray-800 rounded-2xl card-shadow p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Experience & Activities</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-emerald-500 pl-4 py-2">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                                <i class="fas fa-users mr-2 text-emerald-500"></i>
+                                <span id="english-exp1">MD Membership Developer, University Of Petra • IEEE Student Branch</span>
+                                <span class="hidden" id="arabic-exp1">مطور العضوية، جامعة البترا • فرع IEEE الطلابي</span>
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1" id="english-exp1-desc">
+                                May 2025-Present • Supported IEEE student branch growth through events and member engagement.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 hidden" id="arabic-exp1-desc">
+                                مايو 2025 - حتى الآن • دعم نمو فرع IEEE الطلابي من خلال الفعاليات والمشاركة مع الأعضاء.
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-blue-500 pl-4 py-2">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                                <i class="fas fa-gamepad mr-2 text-blue-500"></i>
+                                <span id="english-exp2">Founding member, University of Petra • VR & Gaming Club</span>
+                                <span class="hidden" id="arabic-exp2">عضو مؤسس، جامعة البترا • نادي VR والألعاب</span>
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1" id="english-exp2-desc">
+                                May 2025-Present • Founding member of the VR & Gaming Club at University of Petra.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 hidden" id="arabic-exp2-desc">
+                                مايو 2025 - حتى الآن • عضو مؤسس في نادي VR والألعاب بجامعة البترا.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Translation Button -->
+                <div class="mt-8 flex justify-center">
+                    <button id="translate-btn" class="translate-button">
+                        <span class="translate-button-top">
+                            <i class="fas fa-language mr-2"></i>
+                            <span id="translate-text">Translate to Arabic</span>
+                        </span>
+                        <span class="translate-button-bottom"></span>
+                        <span class="translate-button-base"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-calculator text-emerald-400 text-xl"></i>
+                        <h3 class="text-xl font-bold">HealthCalc</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Your comprehensive health calculator for calorie needs, ideal weight, and nutrition guidance. 
+                        Make informed decisions about your health and wellness journey.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold text-gray-200 mb-4">Health Tools</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>BMR & TDEE Calculator</li>
+                        <li>Ideal Weight Calculator</li>
+                        <li>BMI Analysis</li>
+                        <li>Macro Calculator</li>
+                        <li>Nutrition Tips</li>
+                    </ul>
+                </div>
+                
+                <!-- Health Info -->
+                <div>
+                    <h4 class="font-semibold text-gray-200 mb-4">Health Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>Mifflin-St Jeor Equation</li>
+                        <li>Healthy BMI Ranges</li>
+                        <li>Activity Level Guidelines</li>
+                        <li>Macronutrient Ratios</li>
+                        <li>Lifestyle Tips</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © 2025 HealthCalc. Built by zaid abu alshaar ( زيد ابو الشعر) for your wellness journey.
+                </div>
+                <div class="flex items-center space-x-1 text-gray-400 text-sm">
+                    <span>Made with</span>
+                    <i class="fas fa-heart text-red-400"></i>
+                    <span>for your health</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark');
+                themeToggle.checked = true;
+                sunIcon.classList.remove('sun-animation');
+                sunIcon.classList.add('opacity-50');
+                moonIcon.classList.add('moon-animation');
+                moonIcon.classList.remove('opacity-50');
+            } else {
+                body.classList.remove('dark');
+                themeToggle.checked = false;
+                sunIcon.classList.add('sun-animation');
+                sunIcon.classList.remove('opacity-50');
+                moonIcon.classList.remove('moon-animation');
+                moonIcon.classList.add('opacity-50');
+            }
+            
+            // Update theme when toggle changes
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    sunIcon.classList.remove('sun-animation');
+                    sunIcon.classList.add('opacity-50');
+                    moonIcon.classList.add('moon-animation');
+                    moonIcon.classList.remove('opacity-50');
+                } else {
+                    body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    sunIcon.classList.add('sun-animation');
+                    sunIcon.classList.remove('opacity-50');
+                    moonIcon.classList.remove('moon-animation');
+                    moonIcon.classList.add('opacity-50');
+                }
+            });
+            
+            // Navigation functionality
+            const homeNav = document.getElementById('home-nav');
+            const calorieNav = document.getElementById('calorie-nav');
+            const weightNav = document.getElementById('weight-nav');
+            const nutritionNav = document.getElementById('nutrition-nav');
+            const aboutNav = document.getElementById('about-nav');
+            
+            const mobileHome = document.getElementById('mobile-home');
+            const mobileCalorie = document.getElementById('mobile-calorie');
+            const mobileWeight = document.getElementById('mobile-weight');
+            const mobileNutrition = document.getElementById('mobile-nutrition');
+            const mobileAbout = document.getElementById('mobile-about');
+            
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuItems = document.getElementById('mobile-menu-items');
+            
+            const homePage = document.getElementById('home-page');
+            const caloriePage = document.getElementById('calorie-page');
+            const weightPage = document.getElementById('weight-page');
+            const nutritionPage = document.getElementById('nutrition-page');
+            const aboutPage = document.getElementById('about-page');
+            
+            const featureButtons = document.querySelectorAll('[data-target]');
+            
+            // Navigation functions
+            function navigateTo(page) {
+                // Hide all pages
+                homePage.classList.add('hidden');
+                caloriePage.classList.add('hidden');
+                weightPage.classList.add('hidden');
+                nutritionPage.classList.add('hidden');
+                aboutPage.classList.add('hidden');
+                mobileMenuItems.classList.add('hidden');
+                
+                // Remove active class from all nav items
+                document.querySelectorAll('nav button').forEach(btn => {
+                    btn.classList.remove('nav-active');
+                    btn.classList.add('text-gray-600', 'dark:text-gray-300', 'hover:text-primary', 'dark:hover:text-primary', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
+                });
+                
+                document.querySelectorAll('#mobile-menu-items button').forEach(btn => {
+                    btn.classList.remove('nav-active');
+                });
+                
+                // Show selected page
+                switch(page) {
+                    case 'home':
+                        homePage.classList.remove('hidden');
+                        homeNav.classList.add('nav-active');
+                        mobileHome.classList.add('nav-active');
+                        break;
+                    case 'calorie':
+                        caloriePage.classList.remove('hidden');
+                        calorieNav.classList.add('nav-active');
+                        mobileCalorie.classList.add('nav-active');
+                        break;
+                    case 'weight':
+                        weightPage.classList.remove('hidden');
+                        weightNav.classList.add('nav-active');
+                        mobileWeight.classList.add('nav-active');
+                        break;
+                    case 'nutrition':
+                        nutritionPage.classList.remove('hidden');
+                        nutritionNav.classList.add('nav-active');
+                        mobileNutrition.classList.add('nav-active');
+                        break;
+                    case 'about':
+                        aboutPage.classList.remove('hidden');
+                        aboutNav.classList.add('nav-active');
+                        mobileAbout.classList.add('nav-active');
+                        break;
+                }
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+            
+            // Event listeners
+            homeNav.addEventListener('click', () => navigateTo('home'));
+            calorieNav.addEventListener('click', () => navigateTo('calorie'));
+            weightNav.addEventListener('click', () => navigateTo('weight'));
+            nutritionNav.addEventListener('click', () => navigateTo('nutrition'));
+            aboutNav.addEventListener('click', () => navigateTo('about'));
+            
+            mobileHome.addEventListener('click', () => navigateTo('home'));
+            mobileCalorie.addEventListener('click', () => navigateTo('calorie'));
+            mobileWeight.addEventListener('click', () => navigateTo('weight'));
+            mobileNutrition.addEventListener('click', () => navigateTo('nutrition'));
+            mobileAbout.addEventListener('click', () => navigateTo('about'));
+            
+            mobileMenu.addEventListener('click', () => {
+                mobileMenuItems.classList.toggle('hidden');
+            });
+            
+            featureButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target').replace('-page', '');
+                    navigateTo(target);
+                });
+            });
+            
+            // Translation functionality for About page
+            const translateBtn = document.getElementById('translate-btn');
+            const translateText = document.getElementById('translate-text');
+            
+            if (translateBtn) {
+                translateBtn.addEventListener('click', function() {
+                    // Toggle English/Arabic content
+                    const englishContent = document.getElementById('english-content');
+                    const arabicContent = document.getElementById('arabic-content');
+                    
+                    const englishExp1 = document.getElementById('english-exp1');
+                    const arabicExp1 = document.getElementById('arabic-exp1');
+                    const englishExp1Desc = document.getElementById('english-exp1-desc');
+                    const arabicExp1Desc = document.getElementById('arabic-exp1-desc');
+                    
+                    const englishExp2 = document.getElementById('english-exp2');
+                    const arabicExp2 = document.getElementById('arabic-exp2');
+                    const englishExp2Desc = document.getElementById('english-exp2-desc');
+                    const arabicExp2Desc = document.getElementById('arabic-exp2-desc');
+                    
+                    if (englishContent.classList.contains('hidden')) {
+                        // Switch to English
+                        englishContent.classList.remove('hidden');
+                        arabicContent.classList.add('hidden');
+                        
+                        englishExp1.classList.remove('hidden');
+                        arabicExp1.classList.add('hidden');
+                        englishExp1Desc.classList.remove('hidden');
+                        arabicExp1Desc.classList.add('hidden');
+                        
+                        englishExp2.classList.remove('hidden');
+                        arabicExp2.classList.add('hidden');
+                        englishExp2Desc.classList.remove('hidden');
+                        arabicExp2Desc.classList.add('hidden');
+                        
+                        translateText.textContent = 'Translate to Arabic';
+                        document.body.dir = 'ltr';
+                    } else {
+                        // Switch to Arabic
+                        englishContent.classList.add('hidden');
+                        arabicContent.classList.remove('hidden');
+                        
+                        englishExp1.classList.add('hidden');
+                        arabicExp1.classList.remove('hidden');
+                        englishExp1Desc.classList.add('hidden');
+                        arabicExp1Desc.classList.remove('hidden');
+                        
+                        englishExp2.classList.add('hidden');
+                        arabicExp2.classList.remove('hidden');
+                        englishExp2Desc.classList.add('hidden');
+                        arabicExp2Desc.classList.remove('hidden');
+                        
+                        translateText.textContent = 'ترجمة إلى الإنجليزية';
+                        document.body.dir = 'rtl';
+                    }
+                });
+            }
+            
+            // Calorie Calculator Functionality
+            const calculateCaloriesBtn = document.getElementById('calculate-calories');
+            if (calculateCaloriesBtn) {
+                calculateCaloriesBtn.addEventListener('click', function() {
+                    // Get form values
+                    const age = parseInt(document.getElementById('age').value);
+                    const gender = document.getElementById('gender').value;
+                    const height = parseInt(document.getElementById('height').value);
+                    const weight = parseInt(document.getElementById('weight').value);
+                    const activityLevel = document.querySelector('input[name="activityLevel"]:checked')?.value;
+                    const goal = document.querySelector('input[name="goal"]:checked')?.value;
+                    
+                    // Reset errors
+                    document.querySelectorAll('.error').forEach(el => el.classList.add('hidden'));
+                    
+                    // Validate inputs
+                    let valid = true;
+                    
+                    if (!age || age < 15 || age > 100) {
+                        document.getElementById('age-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!gender) {
+                        document.getElementById('gender-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!height || height < 100 || height > 250) {
+                        document.getElementById('height-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!weight || weight < 30 || weight > 300) {
+                        document.getElementById('weight-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!activityLevel) {
+                        document.getElementById('activity-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!goal) {
+                        document.getElementById('goal-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!valid) return;
+                    
+                    // Calculate BMR
+                    let bmr;
+                    if (gender === 'male') {
+                        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+                    } else {
+                        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+                    }
+                    
+                    // Calculate TDEE
+                    const activityMultipliers = {
+                        sedentary: 1.2,
+                        lightly_active: 1.375,
+                        moderately_active: 1.55,
+                        very_active: 1.725
+                    };
+                    
+                    const tdee = bmr * activityMultipliers[activityLevel];
+                    
+                    // Adjust for goal
+                    let targetCalories;
+                    switch(goal) {
+                        case 'lose_weight':
+                            targetCalories = tdee - 500;
+                            break;
+                        case 'gain_muscle':
+                            targetCalories = tdee + 500;
+                            break;
+                        case 'maintain_weight':
+                        default:
+                            targetCalories = tdee;
+                    }
+                    
+                    // Calculate macros
+                    const protein = Math.round((targetCalories * 0.25) / 4);
+                    const carbs = Math.round((targetCalories * 0.45) / 4);
+                    const fats = Math.round((targetCalories * 0.30) / 9);
+                    
+                    // Display results
+                    const resultsHTML = `
+                        <div class="space-y-6">
+                            <!-- Calorie Results -->
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/50 dark:to-indigo-900/50 p-4 rounded-lg">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="fas fa-running text-blue-600 dark:text-blue-300"></i>
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">BMR (Basal Metabolic Rate)</h3>
+                                    </div>
+                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-300">${Math.round(bmr)} calories/day</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Calories burned at rest</p>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/50 dark:to-teal-900/50 p-4 rounded-lg">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="fas fa-bolt text-emerald-600 dark:text-emerald-300"></i>
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">TDEE (Total Daily Energy)</h3>
+                                    </div>
+                                    <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-300">${Math.round(tdee)} calories/day</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Calories burned including activity</p>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/50 dark:to-red-900/50 p-4 rounded-lg">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="fas fa-bullseye text-orange-600 dark:text-orange-300"></i>
+                                        <h3 class="font-semibold text-gray-900 dark:text-white">Target Daily Calories</h3>
+                                    </div>
+                                    <p class="text-2xl font-bold text-orange-600 dark:text-orange-300">${Math.round(targetCalories)} calories/day</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Adjusted for your goal</p>
+                                </div>
+                            </div>
+
+                            <!-- Macronutrient Breakdown -->
+                            <div class="border-t pt-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recommended Macronutrients</h3>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="text-center p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
+                                        <div class="text-xl font-bold text-red-600 dark:text-red-300">${protein}g</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Protein</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-500">25%</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                                        <div class="text-xl font-bold text-blue-600 dark:text-blue-300">${carbs}g</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Carbs</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-500">45%</div>
+                                    </div>
+                                    <div class="text-center p-3 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
+                                        <div class="text-xl font-bold text-yellow-600 dark:text-yellow-300">${fats}g</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Fats</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-500">30%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tips -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Tips for Success:</h4>
+                                <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                    <li>• Track your food intake for better accuracy</li>
+                                    <li>• Adjust portions based on your progress</li>
+                                    <li>• Stay hydrated with 8-10 glasses of water daily</li>
+                                    <li>• Get 7-9 hours of quality sleep</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('calorie-results').innerHTML = resultsHTML;
+                });
+            }
+            
+            // Ideal Weight Calculator Functionality
+            const calculateIdealWeightBtn = document.getElementById('calculate-ideal-weight');
+            if (calculateIdealWeightBtn) {
+                calculateIdealWeightBtn.addEventListener('click', function() {
+                    // Get form values
+                    const height = parseInt(document.getElementById('height-weight').value);
+                    const currentWeight = parseInt(document.getElementById('current-weight').value);
+                    
+                    // Reset errors
+                    document.getElementById('height-weight-error').classList.add('hidden');
+                    document.getElementById('current-weight-error').classList.add('hidden');
+                    
+                    // Validate inputs
+                    let valid = true;
+                    
+                    if (!height || height < 100 || height > 250) {
+                        document.getElementById('height-weight-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!currentWeight || currentWeight < 30 || currentWeight > 300) {
+                        document.getElementById('current-weight-error').classList.remove('hidden');
+                        valid = false;
+                    }
+                    
+                    if (!valid) return;
+                    
+                    // Calculate ideal weight (using BMI of 22)
+                    const heightInMeters = height / 100;
+                    const idealWeight = Math.round(22 * (heightInMeters * heightInMeters));
+                    
+                    // Calculate current BMI
+                    const currentBMI = currentWeight / (heightInMeters * heightInMeters);
+                    
+                    // Determine BMI category
+                    let category;
+                    let categoryClass;
+                    if (currentBMI < 18.5) {
+                        category = 'Underweight';
+                        categoryClass = 'text-blue-600 dark:text-blue-300';
+                    } else if (currentBMI < 25) {
+                        category = 'Normal weight';
+                        categoryClass = 'text-green-600 dark:text-green-300';
+                    } else if (currentBMI < 30) {
+                        category = 'Overweight';
+                        categoryClass = 'text-yellow-600 dark:text-yellow-300';
+                    } else {
+                        category = 'Obese';
+                        categoryClass = 'text-red-600 dark:text-red-300';
+                    }
+                    
+                    // Calculate healthy weight range (BMI 18.5 to 24.9)
+                    const minHealthyWeight = Math.round(18.5 * (heightInMeters * heightInMeters));
+                    const maxHealthyWeight = Math.round(24.9 * (heightInMeters * heightInMeters));
+                    
+                    // Calculate weight difference
+                    const diff = currentWeight - idealWeight;
+                    let analysisHTML;
+                    
+                    if (Math.abs(diff) <= 2) {
+                        analysisHTML = `
+                            <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
+                                <p class="text-green-800 dark:text-green-200 font-medium">
+                                    🎉 Great job! Your current weight is very close to the ideal range.
+                                </p>
+                            </div>
+                        `;
+                    } else if (diff > 0) {
+                        analysisHTML = `
+                            <div class="bg-orange-50 dark:bg-orange-900/30 p-4 rounded-lg">
+                                <p class="text-orange-800 dark:text-orange-200 font-medium">
+                                    You are ${Math.abs(diff).toFixed(1)} kg above your ideal weight.
+                                </p>
+                                <p class="text-orange-700 dark:text-orange-300 text-sm mt-1">
+                                    Consider a gradual approach with healthy diet and exercise.
+                                </p>
+                            </div>
+                        `;
+                    } else {
+                        analysisHTML = `
+                            <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                                <p class="text-blue-800 dark:text-blue-200 font-medium">
+                                    You are ${Math.abs(diff).toFixed(1)} kg below your ideal weight.
+                                </p>
+                                <p class="text-blue-700 dark:text-blue-300 text-sm mt-1">
+                                    Focus on healthy weight gain with nutritious foods and strength training.
+                                </p>
+                            </div>
+                        `;
+                    }
+                    
+                    // Display results
+                    const resultsHTML = `
+                        <div class="space-y-6">
+                            <!-- Current BMI -->
+                            <div class="${currentBMI < 18.5 ? 'bg-blue-50 dark:bg-blue-900/30' : currentBMI < 25 ? 'bg-green-50 dark:bg-green-900/30' : currentBMI < 30 ? 'bg-yellow-50 dark:bg-yellow-900/30' : 'bg-red-50 dark:bg-red-900/30'} p-4 rounded-lg">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-weight-scale text-gray-600 dark:text-gray-400"></i>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">Current BMI</h3>
+                                </div>
+                                <p class="text-3xl font-bold ${categoryClass}">
+                                    ${currentBMI.toFixed(1)}
+                                </p>
+                                <p class="text-sm font-medium ${categoryClass}">
+                                    ${category}
+                                </p>
+                            </div>
+
+                            <!-- Ideal Weight -->
+                            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/50 dark:to-teal-900/50 p-4 rounded-lg">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-bullseye text-emerald-600 dark:text-emerald-300"></i>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">Ideal Weight</h3>
+                                </div>
+                                <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-300">${idealWeight} kg</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Based on BMI of 22</p>
+                            </div>
+
+                            <!-- Healthy Weight Range -->
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/50 dark:to-indigo-900/50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Healthy Weight Range</h3>
+                                <p class="text-2xl font-bold text-blue-600 dark:text-blue-300">
+                                    ${minHealthyWeight} - ${maxHealthyWeight} kg
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">BMI 18.5 - 24.9</p>
+                            </div>
+
+                            <!-- Weight Difference Analysis -->
+                            <div class="border-t pt-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Analysis</h3>
+                                <div class="space-y-3">
+                                    ${analysisHTML}
+                                </div>
+                            </div>
+
+                            <!-- Recommendations -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Recommendations:</h4>
+                                <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                    <li>• Maintain a balanced diet with all food groups</li>
+                                    <li>• Stay physically active with regular exercise</li>
+                                    <li>• Monitor your weight regularly but don't obsess</li>
+                                    <li>• Consult a healthcare provider for personalized advice</li>
+                                    <li>• Focus on overall health, not just the number on the scale</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('weight-results').innerHTML = resultsHTML;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
