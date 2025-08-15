@@ -379,8 +379,6 @@
           border-radius: 55px;
           border-top-right-radius: 100%;
           background: linear-gradient(0deg, rgba(255, 255, 255, 0.349) 0%, rgba(255, 255, 255, 0.815) 100%);
-          /* -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px); */
           transform: translate3d(0px, 0px, 25px);
           border-left: 1px solid white;
           border-bottom: 1px solid white;
@@ -470,10 +468,6 @@
 
         .bottom .social-buttons-container .social-button:nth-child(2) {
           transition: transform 0.2s ease-in-out 0.6s, box-shadow 0.2s ease-in-out 0.6s;
-        }
-
-        .bottom .social-buttons-container .social-button:nth-child(3) {
-          transition: transform 0.2s ease-in-out 0.8s, box-shadow 0.2s ease-in-out 0.8s;
         }
 
         .bottom .social-buttons-container .social-button .svg {
@@ -592,94 +586,69 @@
           transform: translate3d(0, 0, 120px);
         }
 
-        /* Translation Button Style (From Uiverse.io by njesenberger) */
-        .translate-button {
-          -webkit-appearance: none;
-          appearance: none;
-          position: relative;
-          border-width: 0;
-          padding: 0 8px 12px;
-          min-width: 10em;
-          box-sizing: border-box;
-          background: transparent;
-          font: inherit;
-          cursor: pointer;
+        /* Translation Button Style */
+        .translation-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
         }
-
-        .translate-button-top {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
-          z-index: 0;
-          padding: 8px 16px;
-          transform: translateY(0);
-          text-align: center;
-          color: #fff;
-          text-shadow: 0 -1px rgba(0, 0, 0, .25);
-          transition-property: transform;
-          transition-duration: .2s;
-          -webkit-user-select: none;
-          user-select: none;
+        
+        .translation-button:hover {
+            background: #2563eb;
         }
-
-        .translate-button:active .translate-button-top {
-          transform: translateY(6px);
+        
+        .translation-button i {
+            font-size: 18px;
         }
-
-        .translate-button-top::after {
-          content: '';
-          position: absolute;
-          z-index: -1;
-          border-radius: 4px;
-          width: 100%;
-          height: 100%;
-          box-sizing: content-box;
-          background-image: radial-gradient(#cd3f64, #9d3656);
-          text-align: center;
-          color: #fff;
-          box-shadow: inset 0 0 0px 1px rgba(255, 255, 255, .2), 0 1px 2px 1px rgba(255, 255, 255, .2);
-          transition-property: border-radius, padding, width, transform;
-          transition-duration: .2s;
+        
+        .rtl {
+            direction: rtl;
         }
-
-        .translate-button:active .translate-button-top::after {
-          border-radius: 6px;
-          padding: 0 2px;
+        
+        .rtl .content {
+            padding: 100px 30px 0px 60px;
         }
-
-        .translate-button-bottom {
-          position: absolute;
-          z-index: -1;
-          bottom: 4px;
-          left: 4px;
-          border-radius: 8px / 16px 16px 8px 8px;
-          padding-top: 6px;
-          width: calc(100% - 8px);
-          height: calc(100% - 10px);
-          box-sizing: content-box;
-          background-color: #803;
-          background-image: radial-gradient(4px 8px at 4px calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(4px 8px at calc(100% - 4px) calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(16px at -4px 0, white, transparent), radial-gradient(16px at calc(100% + 4px) 0, white, transparent);
-          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5), inset 0 -1px 3px 3px rgba(0, 0, 0, .4);
-          transition-property: border-radius, padding-top;
-          transition-duration: .2s;
+        
+        .rtl .bottom {
+            flex-direction: row-reverse;
         }
-
-        .translate-button:active .translate-button-bottom {
-          border-radius: 10px 10px 8px 8px / 8px;
-          padding-top: 0;
+        
+        .rtl .logo {
+            left: 0;
+            right: auto;
         }
-
-        .translate-button-base {
-          position: absolute;
-          z-index: -2;
-          top: 4px;
-          left: 0;
-          border-radius: 12px;
-          width: 100%;
-          height: calc(100% - 4px);
-          background-color: rgba(0, 0, 0, .15);
-          box-shadow: 0 1px 1px 0 rgba(255, 255, 255, .75), inset 0 2px 2px rgba(0, 0, 0, .25);
+        
+        .rtl .logo .circle1 {
+            left: 8px;
+            right: auto;
+        }
+        
+        .rtl .logo .circle2 {
+            left: 10px;
+            right: auto;
+        }
+        
+        .rtl .logo .circle3 {
+            left: 17px;
+            right: auto;
+        }
+        
+        .rtl .logo .circle4 {
+            left: 23px;
+            right: auto;
+        }
+        
+        .rtl .logo .circle5 {
+            left: 30px;
+            right: auto;
         }
     </style>
 </head>
@@ -731,6 +700,12 @@
                         </label>
                         <i id="moon-icon" class="fas fa-moon text-indigo-300 text-lg opacity-50"></i>
                     </div>
+                    
+                    <!-- Translation Button -->
+                    <button id="translate-btn" class="translation-button">
+                        <i class="fas fa-language"></i>
+                        <span id="lang-text">AR</span>
+                    </button>
                     
                     <div class="md:hidden">
                         <button id="mobile-menu" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
@@ -1342,22 +1317,15 @@
                             <div class="glass">
                                 <div class="content">
                                     <span class="title">Zaid Abu Al Shaar</span>
-                                    <p class="text" id="english-content">
-                                       
-                                    </p>
-                                    <p class="text hidden" id="arabic-content">
-                                    </p>
+                                   
                                 </div>
                                 <div class="bottom">
                                     <div class="social-buttons-container">
                                         <a href="https://www.instagram.com/Zaid_10_7" target="_blank" class="social-button">
                                             <i class="fab fa-instagram"></i>
                                         </a>
-                                        <a href="https://wa.me/962799569573?text=زيد يرحب بكم كيف يمكنني مساعدتك" target="_blank" class="social-button">
+                                        <a href="https://wa.me/962799569573?text=كبب مرحبا زيد هل يمكنك اخباري المزيد عنك" target="_blank" class="social-button">
                                             <i class="fab fa-whatsapp"></i>
-                                        </a>
-                                        <a href="#" class="social-button">
-                                            <i class="fab fa-linkedin-in"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -1368,7 +1336,7 @@
                                 <div class="circle circle3"></div>
                                 <div class="circle circle4"></div>
                                 <div class="circle circle5">
-                                    <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+                                    <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
                                 </div>
                             </div>
                         </div>
@@ -1408,18 +1376,6 @@
                             </p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Translation Button -->
-                <div class="mt-8 flex justify-center">
-                    <button id="translate-btn" class="translate-button">
-                        <span class="translate-button-top">
-                            <i class="fas fa-language mr-2"></i>
-                            <span id="translate-text">Translate to Arabic</span>
-                        </span>
-                        <span class="translate-button-bottom"></span>
-                        <span class="translate-button-base"></span>
-                    </button>
                 </div>
             </div>
         </section>
@@ -1626,12 +1582,15 @@
                 });
             });
             
-            // Translation functionality for About page
+            // Translation functionality for entire site
             const translateBtn = document.getElementById('translate-btn');
-            const translateText = document.getElementById('translate-text');
+            const langText = document.getElementById('lang-text');
+            let isArabic = false;
             
             if (translateBtn) {
                 translateBtn.addEventListener('click', function() {
+                    isArabic = !isArabic;
+                    
                     // Toggle English/Arabic content
                     const englishContent = document.getElementById('english-content');
                     const arabicContent = document.getElementById('arabic-content');
@@ -1646,40 +1605,44 @@
                     const englishExp2Desc = document.getElementById('english-exp2-desc');
                     const arabicExp2Desc = document.getElementById('arabic-exp2-desc');
                     
-                    if (englishContent.classList.contains('hidden')) {
-                        // Switch to English
-                        englishContent.classList.remove('hidden');
-                        arabicContent.classList.add('hidden');
-                        
-                        englishExp1.classList.remove('hidden');
-                        arabicExp1.classList.add('hidden');
-                        englishExp1Desc.classList.remove('hidden');
-                        arabicExp1Desc.classList.add('hidden');
-                        
-                        englishExp2.classList.remove('hidden');
-                        arabicExp2.classList.add('hidden');
-                        englishExp2Desc.classList.remove('hidden');
-                        arabicExp2Desc.classList.add('hidden');
-                        
-                        translateText.textContent = 'Translate to Arabic';
-                        document.body.dir = 'ltr';
+                    // Toggle body direction
+                    if (isArabic) {
+                        body.classList.add('rtl');
+                        langText.textContent = 'EN';
                     } else {
+                        body.classList.remove('rtl');
+                        langText.textContent = 'AR';
+                    }
+                    
+                    // Toggle content visibility
+                    if (isArabic) {
                         // Switch to Arabic
-                        englishContent.classList.add('hidden');
-                        arabicContent.classList.remove('hidden');
+                        if (englishContent) englishContent.classList.add('hidden');
+                        if (arabicContent) arabicContent.classList.remove('hidden');
                         
-                        englishExp1.classList.add('hidden');
-                        arabicExp1.classList.remove('hidden');
-                        englishExp1Desc.classList.add('hidden');
-                        arabicExp1Desc.classList.remove('hidden');
+                        if (englishExp1) englishExp1.classList.add('hidden');
+                        if (arabicExp1) arabicExp1.classList.remove('hidden');
+                        if (englishExp1Desc) englishExp1Desc.classList.add('hidden');
+                        if (arabicExp1Desc) arabicExp1Desc.classList.remove('hidden');
                         
-                        englishExp2.classList.add('hidden');
-                        arabicExp2.classList.remove('hidden');
-                        englishExp2Desc.classList.add('hidden');
-                        arabicExp2Desc.classList.remove('hidden');
+                        if (englishExp2) englishExp2.classList.add('hidden');
+                        if (arabicExp2) arabicExp2.classList.remove('hidden');
+                        if (englishExp2Desc) englishExp2Desc.classList.add('hidden');
+                        if (arabicExp2Desc) arabicExp2Desc.classList.remove('hidden');
+                    } else {
+                        // Switch to English
+                        if (englishContent) englishContent.classList.remove('hidden');
+                        if (arabicContent) arabicContent.classList.add('hidden');
                         
-                        translateText.textContent = 'ترجمة إلى الإنجليزية';
-                        document.body.dir = 'rtl';
+                        if (englishExp1) englishExp1.classList.remove('hidden');
+                        if (arabicExp1) arabicExp1.classList.add('hidden');
+                        if (englishExp1Desc) englishExp1Desc.classList.remove('hidden');
+                        if (arabicExp1Desc) arabicExp1Desc.classList.add('hidden');
+                        
+                        if (englishExp2) englishExp2.classList.remove('hidden');
+                        if (arabicExp2) arabicExp2.classList.add('hidden');
+                        if (englishExp2Desc) englishExp2Desc.classList.remove('hidden');
+                        if (arabicExp2Desc) arabicExp2Desc.classList.add('hidden');
                     }
                 });
             }
