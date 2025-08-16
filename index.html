@@ -585,71 +585,6 @@
         .parent:hover .card .logo .circle5 {
           transform: translate3d(0, 0, 120px);
         }
-
-        /* Translation Button Style */
-        .translation-button {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
-        }
-        
-        .translation-button:hover {
-            background: #2563eb;
-        }
-        
-        .translation-button i {
-            font-size: 18px;
-        }
-        
-        .rtl {
-            direction: rtl;
-        }
-        
-        .rtl .content {
-            padding: 100px 30px 0px 60px;
-        }
-        
-        .rtl .bottom {
-            flex-direction: row-reverse;
-        }
-        
-        .rtl .logo {
-            left: 0;
-            right: auto;
-        }
-        
-        .rtl .logo .circle1 {
-            left: 8px;
-            right: auto;
-        }
-        
-        .rtl .logo .circle2 {
-            left: 10px;
-            right: auto;
-        }
-        
-        .rtl .logo .circle3 {
-            left: 17px;
-            right: auto;
-        }
-        
-        .rtl .logo .circle4 {
-            left: 23px;
-            right: auto;
-        }
-        
-        .rtl .logo .circle5 {
-            left: 30px;
-            right: auto;
-        }
     </style>
 </head>
 <body class="font-sans bg-gray-50 transition-colors duration-300">
@@ -700,12 +635,6 @@
                         </label>
                         <i id="moon-icon" class="fas fa-moon text-indigo-300 text-lg opacity-50"></i>
                     </div>
-                    
-                    <!-- Translation Button -->
-                    <button id="translate-btn" class="translation-button">
-                        <i class="fas fa-language"></i>
-                        <span id="lang-text">AR</span>
-                    </button>
                     
                     <div class="md:hidden">
                         <button id="mobile-menu" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
@@ -1324,7 +1253,7 @@
                                         <a href="https://www.instagram.com/Zaid_10_7" target="_blank" class="social-button">
                                             <i class="fab fa-instagram"></i>
                                         </a>
-                                        <a href="https://wa.me/962799569573?text=كبب مرحبا زيد هل يمكنك اخباري المزيد عنك" target="_blank" class="social-button">
+                                        <a href="https://wa.me/962799569573?text=Hello%20Zaid,%20tell%20me%20more%20about%20yourself" target="_blank" class="social-button">
                                             <i class="fab fa-whatsapp"></i>
                                         </a>
                                     </div>
@@ -1351,28 +1280,20 @@
                         <div class="border-l-4 border-emerald-500 pl-4 py-2">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                                 <i class="fas fa-users mr-2 text-emerald-500"></i>
-                                <span id="english-exp1">MD Membership Developer, University Of Petra • IEEE Student Branch</span>
-                                <span class="hidden" id="arabic-exp1">مطور العضوية، جامعة البترا • فرع IEEE الطلابي</span>
+                                MD Membership Developer, University Of Petra • IEEE Student Branch
                             </h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1" id="english-exp1-desc">
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
                                 May 2025-Present • Supported IEEE student branch growth through events and member engagement.
-                            </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 hidden" id="arabic-exp1-desc">
-                                مايو 2025 - حتى الآن • دعم نمو فرع IEEE الطلابي من خلال الفعاليات والمشاركة مع الأعضاء.
                             </p>
                         </div>
                         
                         <div class="border-l-4 border-blue-500 pl-4 py-2">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                                 <i class="fas fa-gamepad mr-2 text-blue-500"></i>
-                                <span id="english-exp2">Founding member, University of Petra • VR & Gaming Club</span>
-                                <span class="hidden" id="arabic-exp2">عضو مؤسس، جامعة البترا • نادي VR والألعاب</span>
+                                Founding member, University of Petra • VR & Gaming Club
                             </h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1" id="english-exp2-desc">
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
                                 May 2025-Present • Founding member of the VR & Gaming Club at University of Petra.
-                            </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 hidden" id="arabic-exp2-desc">
-                                مايو 2025 - حتى الآن • عضو مؤسس في نادي VR والألعاب بجامعة البترا.
                             </p>
                         </div>
                     </div>
@@ -1425,7 +1346,7 @@
             <!-- Bottom Bar -->
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <div class="text-gray-400 text-sm mb-4 md:mb-0">
-                    © 2025 HealthCalc. Built by zaid abu alshaar ( زيد ابو الشعر) for your wellness journey.
+                    © 2025 HealthCalc. Built by zaid abu alshaar for your wellness journey.
                 </div>
                 <div class="flex items-center space-x-1 text-gray-400 text-sm">
                     <span>Made with</span>
@@ -1581,71 +1502,6 @@
                     navigateTo(target);
                 });
             });
-            
-            // Translation functionality for entire site
-            const translateBtn = document.getElementById('translate-btn');
-            const langText = document.getElementById('lang-text');
-            let isArabic = false;
-            
-            if (translateBtn) {
-                translateBtn.addEventListener('click', function() {
-                    isArabic = !isArabic;
-                    
-                    // Toggle English/Arabic content
-                    const englishContent = document.getElementById('english-content');
-                    const arabicContent = document.getElementById('arabic-content');
-                    
-                    const englishExp1 = document.getElementById('english-exp1');
-                    const arabicExp1 = document.getElementById('arabic-exp1');
-                    const englishExp1Desc = document.getElementById('english-exp1-desc');
-                    const arabicExp1Desc = document.getElementById('arabic-exp1-desc');
-                    
-                    const englishExp2 = document.getElementById('english-exp2');
-                    const arabicExp2 = document.getElementById('arabic-exp2');
-                    const englishExp2Desc = document.getElementById('english-exp2-desc');
-                    const arabicExp2Desc = document.getElementById('arabic-exp2-desc');
-                    
-                    // Toggle body direction
-                    if (isArabic) {
-                        body.classList.add('rtl');
-                        langText.textContent = 'EN';
-                    } else {
-                        body.classList.remove('rtl');
-                        langText.textContent = 'AR';
-                    }
-                    
-                    // Toggle content visibility
-                    if (isArabic) {
-                        // Switch to Arabic
-                        if (englishContent) englishContent.classList.add('hidden');
-                        if (arabicContent) arabicContent.classList.remove('hidden');
-                        
-                        if (englishExp1) englishExp1.classList.add('hidden');
-                        if (arabicExp1) arabicExp1.classList.remove('hidden');
-                        if (englishExp1Desc) englishExp1Desc.classList.add('hidden');
-                        if (arabicExp1Desc) arabicExp1Desc.classList.remove('hidden');
-                        
-                        if (englishExp2) englishExp2.classList.add('hidden');
-                        if (arabicExp2) arabicExp2.classList.remove('hidden');
-                        if (englishExp2Desc) englishExp2Desc.classList.add('hidden');
-                        if (arabicExp2Desc) arabicExp2Desc.classList.remove('hidden');
-                    } else {
-                        // Switch to English
-                        if (englishContent) englishContent.classList.remove('hidden');
-                        if (arabicContent) arabicContent.classList.add('hidden');
-                        
-                        if (englishExp1) englishExp1.classList.remove('hidden');
-                        if (arabicExp1) arabicExp1.classList.add('hidden');
-                        if (englishExp1Desc) englishExp1Desc.classList.remove('hidden');
-                        if (arabicExp1Desc) arabicExp1Desc.classList.add('hidden');
-                        
-                        if (englishExp2) englishExp2.classList.remove('hidden');
-                        if (arabicExp2) arabicExp2.classList.add('hidden');
-                        if (englishExp2Desc) englishExp2Desc.classList.remove('hidden');
-                        if (arabicExp2Desc) arabicExp2Desc.classList.add('hidden');
-                    }
-                });
-            }
             
             // Calorie Calculator Functionality
             const calculateCaloriesBtn = document.getElementById('calculate-calories');
